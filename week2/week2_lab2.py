@@ -7,6 +7,10 @@ TELNET_PORT = 23
 TELNET_TIMEOUT = 6
 
 def main():
+    '''
+    Write a script that connects using telnet to the pynet-rtr1 router. 
+    Execute the 'show ip int brief' command on the router and return the output.
+    '''
 
     ip_addr = '50.76.53.27'
     username = 'pyclass'
