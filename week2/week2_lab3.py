@@ -7,6 +7,7 @@ import sys
 import getpass
 
 
+# Convert Telnet code created by Kirk from using functions to classes.
 
 class Telnet(object):
     def __init__(self, ip, username, password, port, timeout, cmd):
