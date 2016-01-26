@@ -19,6 +19,11 @@ class TelnetConnection(object):
         self.timeout = timeout
     
     def login(self):
+        '''
+        Create an instance of telnetlib. Log into the device
+        and disable paging.
+        '''
+        
         try:
             self.remote_conn = telnetlib.Telnet(self.ip, self.port, self.timeout)
         except socket.timeout:
@@ -37,23 +42,19 @@ class TelnetConnection(object):
         return output
 
 class Telnet(TelnetConnection):
-    def __init__(self, cmd='', ip='', username='', password='', port='', timeout=''):
+    def __init__(self, ip, username, password, port, timeout):
         self.ip = ip
         self.username = username
         self.password = password
         self.port = port
         self.timeout = timeout
-        self.cmd = cmd
 
-        # TelnetConnection.__init__(self, ip, username, password, port, timeout)        
         self.remote_conn = TelnetConnection(self.ip, self.username, self.password, self.port, self.timeout)
         
 
         self.remote_conn.login()
-        #return self.remote_conn
 
     def send(self, cmd):
-        #cmd = self.cmd
         cmd = cmd.rstrip()
         self.remote_conn.remote_conn.write(cmd + '\n')
         time.sleep(1)
@@ -67,11 +68,10 @@ def main():
     ip = '50.76.53.27'
     username = 'pyclass'
     password = '88newclass'
-    command = 'show version'
 
-    remote_conn = Telnet(command, ip, username, password, port, timeout)
+    remote_conn = Telnet(ip, username, password, port, timeout)
     
-    output = remote_conn.send('show ip int brief')
+    output = remote_conn.send('show run | s crypto')
     print output
 
 if __name__ == '__main__':
