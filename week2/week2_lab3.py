@@ -11,6 +11,7 @@ import getpass
 
 
 class TelnetConnection(object):
+
     def __init__(self, ip, username, password, port, timeout):
         self.ip = ip
         self.username = username
@@ -42,6 +43,7 @@ class TelnetConnection(object):
         return output
 
 class Telnet(TelnetConnection):
+    
     def __init__(self, ip, username, password, port, timeout):
         self.ip = ip
         self.username = username
@@ -49,16 +51,22 @@ class Telnet(TelnetConnection):
         self.port = port
         self.timeout = timeout
 
-        self.remote_conn = TelnetConnection(self.ip, self.username, self.password, self.port, self.timeout)
         
+        # Create TelnetConnection object
+        
+        self.connect = TelnetConnection(self.ip, self.username, self.password, self.port, self.timeout)
+        
+        
+        # Use login method to log into the device and set paging
+        
+        self.connect.login()
 
-        self.remote_conn.login()
-
+    
     def send(self, cmd):
         cmd = cmd.rstrip()
-        self.remote_conn.remote_conn.write(cmd + '\n')
+        self.connect.remote_conn.write(cmd + '\n')
         time.sleep(1)
-        return self.remote_conn.remote_conn.read_very_eager()
+        return self.connect.remote_conn.read_very_eager()
 
 
 
@@ -71,7 +79,7 @@ def main():
 
     remote_conn = Telnet(ip, username, password, port, timeout)
     
-    output = remote_conn.send('show run | s crypto')
+    output = remote_conn.send('show arp')
     print output
 
 if __name__ == '__main__':
