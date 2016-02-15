@@ -1,0 +1,5 @@
+---
+- name: Generate configuration file
+  template: src=access_switch.j2
+            dest=/home/mdegasperis/pynet/week5/week5_lab3/cfgs/{{item.hostname}}.txt
+  with_items: access_switches
