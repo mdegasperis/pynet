@@ -1,0 +1,34 @@
+---
+- name: Arista Cleanup
+  hosts: arista
+ 
+  tasks:
+    - name: Setting Ethernet6 description to default
+      eos_interface: name=Ethernet6 description=""  
+        username={{ eapi_username }}
+        password={{ eapi_password }}
+        host={{ eapi_hostname }}
+        port={{ eapi_port }}
+        transport=https   
+
+
+    - name: Configure Ethernet6 for access, VLAN1
+      eos_switchport: name=Ethernet6 mode=access access_vlan=1 trunk_allowed_vlans=1-4096
+        username={{ eapi_username }}
+        password={{ eapi_password }}
+        host={{ eapi_hostname }}
+        port={{ eapi_port }}
+        transport=https
+
+    - name: Remove VLANs
+      eos_vlan: name={{item.name}} vlanid={{item.vlanid}} state=absent 
+        username={{ eapi_username }}
+        password={{ eapi_password }}
+        host={{ eapi_hostname }}
+        port={{ eapi_port }}
+        transport=https   
+      
+      with_items:
+        - {name: A/V, vlanid: 2200}
+        - {name: POS, vlanid: 2201}
+        - {name: CORP, vlanid: 2202}        
