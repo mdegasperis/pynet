@@ -1,0 +1,29 @@
+---
+- name: Create VLANs on pynet-sw1
+  hosts: arista
+
+  tasks:
+    - name: Create A/V VLAN
+      eos_vlan: name=A/V vlanid=2200
+        username={{ eapi_username }}
+        password={{ eapi_password }}
+        host={{ eapi_hostname }}
+        port={{ eapi_port }}
+        transport=https
+
+    - name: Create POS VLAN
+      eos_vlan: name=POS vlanid=2201
+        username={{ eapi_username }}
+        password={{ eapi_password }}
+        host={{ eapi_hostname }}
+        port={{ eapi_port }}
+        transport=https
+
+    - name: Create CORP VLAN
+      eos_vlan: name=CORP vlanid=2202
+        username={{ eapi_username }}
+        password={{ eapi_password }}
+        host={{ eapi_hostname }}
+        port={{ eapi_port }}
+        transport=https
+
